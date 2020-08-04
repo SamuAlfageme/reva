@@ -30,6 +30,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	providerpb "github.com/cs3org/go-cs3apis/cs3/app/provider/v1beta1"
@@ -157,15 +158,20 @@ func (s *service) OpenFileInAppProvider(ctx context.Context, req *providerpb.Ope
 
 	log := appctx.GetLogger(ctx)
 
+	var mutex = &sync.Mutex{}
 	if s.appsURLMap == nil {
-		// TODO refresh after e.g. a day or a week
-		err := s.getWopiAppEndpoints(ctx)
-		if err != nil {
-			res := &providerpb.OpenFileInAppProviderResponse{
-				Status: status.NewInternal(ctx, err, "appprovider: getWopiAppEndpoints failed"),
+		mutex.Lock()
+		if s.appsURLMap == nil {
+			// TODO refresh after e.g. a day or a week
+			err := s.getWopiAppEndpoints(ctx)
+			if err != nil {
+				res := &providerpb.OpenFileInAppProviderResponse{
+					Status: status.NewInternal(ctx, err, "appprovider: getWopiAppEndpoints failed"),
+				}
+				return res, nil
 			}
-			return res, nil
 		}
+		mutex.Unlock()
 	}
 
 	httpClient := rhttp.GetHTTPClient(
