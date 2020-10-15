@@ -15,7 +15,7 @@ require (
 	github.com/cs3org/go-cs3apis v0.0.0-20200810113633-b00aca449666
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eventials/go-tus v0.0.0-20200718001131-45c7ec8f5d59
-	github.com/go-ldap/ldap/v3 v3.2.3
+	github.com/go-ldap/ldap/v3 v3.2.4
 	github.com/go-openapi/errors v0.19.6 // indirect
 	github.com/go-openapi/strfmt v0.19.2 // indirect
 	github.com/gofrs/uuid v3.3.0+incompatible
@@ -29,6 +29,7 @@ require (
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/mattn/go-tty v0.0.3 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/ory/fosite v0.32.2
@@ -45,7 +46,6 @@ require (
 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	google.golang.org/grpc v1.32.0
-	gopkg.in/cheggaaa/pb.v1 v1.0.27 // indirect
 )
 
 go 1.13
