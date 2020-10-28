@@ -35,6 +35,7 @@ import (
 	"github.com/cs3org/reva/pkg/app"
 	"github.com/cs3org/reva/pkg/app/provider/demo"
 	"github.com/cs3org/reva/pkg/appctx"
+	"github.com/cs3org/reva/pkg/logger"
 	"github.com/cs3org/reva/pkg/mime"
 	"github.com/cs3org/reva/pkg/rgrpc"
 	"github.com/cs3org/reva/pkg/rgrpc/status"
@@ -93,7 +94,10 @@ func parseConfig(m map[string]interface{}) (*config, error) {
 }
 
 func registerMimeTypes(mimes map[string]string) {
+	tlog := logger.New().With().Int("pid", os.Getpid()).Logger()
+
 	for k, v := range mimes {
+		tlog.Debug().Str("Registering mime type: ", "'"+fmt.Sprintf("%s -> %s", k, v)+"' ").Msg("")
 		mime.RegisterMime(k, v)
 	}
 }
