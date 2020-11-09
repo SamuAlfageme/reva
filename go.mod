@@ -29,6 +29,7 @@ require (
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jedib0t/go-pretty v4.3.0+incompatible
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
+	github.com/mattn/go-tty v0.0.3 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/ory/fosite v0.32.2
@@ -44,8 +45,7 @@ require (
 	go.opencensus.io v0.22.4
 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	google.golang.org/grpc v1.32.0
-	gopkg.in/cheggaaa/pb.v1 v1.0.27 // indirect
+	google.golang.org/grpc v1.33.2
 )
 
 go 1.13
