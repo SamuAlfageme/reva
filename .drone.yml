@@ -66,6 +66,7 @@ steps:
 - name: publish-docker-reva-latest
   pull: always
   image: registry.cern.ch/docker.io/plugins/docker
+  privileged: true
   settings:
     repo: cs3org/reva
     tags: latest
@@ -78,6 +79,7 @@ steps:
 - name: publish-docker-revad-latest
   pull: always
   image: registry.cern.ch/docker.io/plugins/docker
+  privileged: true
   settings:
     repo: cs3org/revad
     tags: latest
@@ -203,6 +205,7 @@ steps:
 - name: docker-reva-tag
   pull: always
   image: registry.cern.ch/docker.io/plugins/docker
+  privileged: true
   settings:
     repo: cs3org/reva
     tags: ${DRONE_TAG}
@@ -215,6 +218,7 @@ steps:
 - name: docker-revad-tag
   pull: always
   image: registry.cern.ch/docker.io/plugins/docker
+  privileged: true
   settings:
     repo: cs3org/revad
     tags: ${DRONE_TAG}
