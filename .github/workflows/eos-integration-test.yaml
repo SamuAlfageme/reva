@@ -1,0 +1,45 @@
+name: Run EOS integration tests
+
+on: push
+
+jobs:
+  test-eos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # - name: Create kind cluster
+      #   uses: helm/kind-action@v1.0.0
+
+      # - name: Install kubectl
+      #   uses: azure/setup-kubectl@v1
+
+      # - name: Install Helm
+      #   uses: azure/setup-helm@v1
+      #   id: install-helm
+
+      # - name: Install EOS
+      #   run: |
+      #     helm repo add eos https://registry.cern.ch/chartrepo/eos
+      #     helm install --wait eos eos/server # -f testing-values.yaml
+      #     kubectl get pods
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16.x
+
+      - name: Build reva and revad
+        run: make build-ci
+
+      - name: Run revad
+        run: |
+          ../../../cmd/revad/revad -c gateway.toml &
+          ../../../cmd/revad/revad -c storage-home-eos.toml &
+          ../../../cmd/revad/revad -c storage-shares-eos.toml &
+          ../../../cmd/revad/revad -c storage-users-eos.toml &
+          ../../../cmd/revad/revad -c users.toml
+        working-directory: tests/oc-integration-tests/drone/

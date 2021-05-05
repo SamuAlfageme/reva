@@ -1,0 +1,35 @@
+[shared]
+jwt_secret = "Pive-Fumkiu4"
+gatewaysvc = "localhost:19000"
+
+[grpc]
+address = "0.0.0.0:13000"
+
+[grpc.services.storageprovider]
+driver = "eoswrapper"
+mount_path = "/eos/user"
+mount_id = "e1a73ede-549b-4226-abdf-40e69ca8230d"
+data_server_url = "http://revad-services:13001/data"
+
+[grpc.services.storageprovider.drivers.eoswrapper]
+namespace = "/eos/user/"
+quota_node = "/eos/user/"
+master_url = "root://eos-mgm"
+slave_url = "root://eos-mgm"
+user_layout = "{{substr 0 1 .Username}}/{{.Username}}"
+share_folder = "/Shares"
+xrdcopy_binary = "/opt/eos/xrootd/bin/xrdcopy"
+
+[http]
+address = "0.0.0.0:13001"
+
+[http.services.dataprovider]
+driver = "eoswrapper"
+
+[http.services.dataprovider.drivers.eoswrapper]
+namespace = "/eos/user/"
+quota_node = "/eos/user/"
+master_url = "root://eos-mgm"
+slave_url = "root://eos-mgm"
+user_layout = "{{substr 0 1 .Username}}/{{.Username}}"
+xrdcopy_binary = "/opt/eos/xrootd/bin/xrdcopy"
