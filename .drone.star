@@ -141,92 +141,14 @@ def buildAndPublishDocker():
             "from_secret": "cbox_password",
           },
         },
-        "detach": True,
         "commands": [
           "TZ=Europe/Berlin go run tools/create-artifacts/main.go -dev -commit ${DRONE_COMMIT} -goversion `go version | awk '{print $$3}'`",
           "curl --fail -X MKCOL 'https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/' -k -u $${USERNAME}:$${PASSWORD}",
-          "curl --fail -X MKCOL 'https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/`date '+%Y-%m-%d'`' -k -u $${USERNAME}:$${PASSWORD}",
-          "curl --fail -X MKCOL 'https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/`date '+%Y-%m-%d'`/${DRONE_COMMIT}' -k -u $${USERNAME}:$${PASSWORD}",
-          "for i in $(ls /drone/src/dist);do curl --fail -X PUT -u $${USERNAME}:$${PASSWORD} https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/`date '+%Y-%m-%d'`/${DRONE_COMMIT}/$${i} --data-binary @./dist/$${i} ; done",
+          "curl --fail -X MKCOL 'https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/'$(date +%Y-%m-%d) -k -u $${USERNAME}:$${PASSWORD}",
+          "curl --fail -X MKCOL 'https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/'$(date +%Y-%m-%d)'/${DRONE_COMMIT}' -k -u $${USERNAME}:$${PASSWORD}",
+          "for i in $(ls /drone/src/dist);do curl --fail -X PUT -u $${USERNAME}:$${PASSWORD} https://cernbox.cern.ch/cernbox/desktop/remote.php/webdav/eos/project/r/reva/www/daily/$(date +%Y-%m-%d)/${DRONE_COMMIT}/$${i} --data-binary @./dist/$${i} ; done",
         ],
       },
-      licenseScanStep(),
-      makeStep("ci"),
-      lintStep(),
-      {
-        "name": "license-check",
-        "image": "registry.cern.ch/docker.io/library/golang:1.16",
-        "failure": "ignore",
-        "environment":{
-          "FOSSA_API_KEY":{
-            "from_secret": "fossa_api_key",
-          },
-        },
-        "commands": [
-          "wget -qO- https://github.com/fossas/fossa-cli/releases/download/v1.0.11/fossa-cli_1.0.11_linux_amd64.tar.gz | tar xvz -C /go/bin/",
-          "/go/bin/fossa test --timeout 900",
-        ]
-      },
-      {
-        "name": "publish-docker-reva-latest",
-        "pull": "always",
-        "image": "plugins/docker",
-        "settings": {
-          "repo": "cs3org/reva",
-          "tags": "latest",
-          "dockerfile": "Dockerfile.revad",
-          "username":{
-            "from_secret": "dockerhub_username",
-          },
-          "password": {
-            "from_secret": "dockerhub_password",
-          },
-          "custom_dns":[
-            "128.142.17.5",
-            "128.142.16.5",
-          ],
-        }
-      },
-      {
-        "name": "publish-docker-revad-latest",
-        "pull": "always",
-        "image": "plugins/docker",
-        "settings":{
-          "repo": "cs3org/revad",
-          "tags": "latest",
-          "dockerfile": "Dockerfile.revad",
-          "username": {
-            "from_secret": "dockerhub_username",
-          },
-          "password": {
-            "from_secret": "dockerhub_password",
-          },
-          "custom_dns": [
-            "128.142.17.5",
-            "128.142.16.5",
-          ],
-        }
-      },
-      {
-        "name": "publish-docker-revad-eos-latest",
-        "pull": "always",
-        "image": "plugins/docker",
-        "settings": {
-          "repo": "cs3org/revad",
-          "tags": "latest-eos",
-          "dockerfile": "Dockerfile.revad-eos",
-          "username": {
-            "from_secret": "dockerhub_username",
-          },
-          "password": {
-            "from_secret": "dockerhub_password",
-          },
-          "custom_dns": [
-            "128.142.17.5",
-            "128.142.16.5",
-          ]
-        }
-      }
     ]
   }
 
